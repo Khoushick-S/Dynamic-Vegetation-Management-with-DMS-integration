@@ -6,19 +6,13 @@
 __pycache__/
 *.py[cod]
 
-# Runtime image data
-uploads/
-processed_image/
-
-# Internal or location-specific conductor data
-conductors_location.csv
-
 # Presentation and demonstration files: review before intentionally publishing
 *.docx
 *.pptx
 *.mp4
 !Architecture Explanation - Trim.mp4
 !DVM Demo Video.mp4
+!Images Coordinates.docx
 
 # Editor and operating-system files
 .vscode/
