@@ -4,6 +4,7 @@ import os
 from datetime import datetime
 from pathlib import Path
 import csv
+import math
 import random
 from dotenv import load_dotenv
 from inference_sdk import InferenceHTTPClient
@@ -21,7 +22,7 @@ UPLOAD_FOLDER = "/tmp/uploads" if IS_VERCEL else os.getenv("UPLOAD_FOLDER", "upl
 PROCESSED_FOLDER = (
     "/tmp/processed_image" if IS_VERCEL else os.getenv("PROCESSED_FOLDER", "processed_image")
 )
-CONDUCTORS_CSV = Path(os.getenv("CONDUCTORS_CSV", "conductors_location.csv"))
+CONDUCTORS_CSV = Path(__file__).resolve().parent / os.getenv("CONDUCTORS_CSV", "conductors_location.csv")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(PROCESSED_FOLDER, exist_ok=True)
 
@@ -42,7 +43,7 @@ def get_devices_info(latitude, longitude):
     """
     if not CONDUCTORS_CSV.exists():
         print(f"Conductors CSV not found: {CONDUCTORS_CSV}")
-        return []
+        return None
 
     # Compare numeric values so harmless formatting differences (for example,
     # -89.4758291 vs -89.47582910) do not prevent a match.
@@ -65,7 +66,10 @@ def get_devices_info(latitude, longitude):
                 # Also safely skips an optional header row if one is added later.
                 continue
 
-            if row_latitude == requested_latitude and row_longitude == requested_longitude:
+            if (
+                math.isclose(row_latitude, requested_latitude, abs_tol=0.0000001)
+                and math.isclose(row_longitude, requested_longitude, abs_tol=0.0000001)
+            ):
                 result.append({
                     "alias": row[2].strip(),
                     "Hdl": row[3].strip(),
@@ -84,6 +88,8 @@ def get_devices():
         return jsonify({"error": "Latitude and longitude required"}), 400
 
     devices = get_devices_info(latitude, longitude)
+    if devices is None:
+        return jsonify({"error": "Conductor data file is unavailable on the server."}), 500
     return jsonify(devices)
 
 @app.route("/analyze", methods=["POST"])
