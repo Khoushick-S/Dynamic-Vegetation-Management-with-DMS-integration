@@ -145,15 +145,21 @@ document.addEventListener("DOMContentLoaded", function () {
             method: "POST",
             body: formData,
         })
-            .then((response) => response.json())
+            .then(async (response) => {
+                const data = await response.json().catch(() => ({}));
+                if (!response.ok) {
+                    throw new Error(data.error || `Analysis request failed (HTTP ${response.status}).`);
+                }
+                return data;
+            })
             .then((data) => {
                 loadingIndicator.style.display = "none";
-                resultMessage.innerHTML = data.message;
+                resultMessage.textContent = data.message;
                 updateTable(data.tabulation);
             })
             .catch((error) => {
                 loadingIndicator.style.display = "none";
-                resultMessage.innerHTML = "❌ Error processing image.";
+                resultMessage.textContent = `Analysis failed: ${error.message}`;
                 console.error("Error:", error);
             });
     });
