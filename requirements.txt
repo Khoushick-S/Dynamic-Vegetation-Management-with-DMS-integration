@@ -1,4 +1,4 @@
 flask
-opencv-python-headless
+Pillow
 inference-sdk
 python-dotenv
