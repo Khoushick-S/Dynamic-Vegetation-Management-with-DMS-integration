@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DVM-NMS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <!-- <link rel="icon" type="image/x-icon" href="https://static-00.iconduck.com/assets.00/oracle-cloud-icon-2048x1291-i8p6hb32.png"> -->
+    <link rel="icon" type="image/x-icon" href="https://docs.oracle.com/sp_common/site-template/ohc-common/img/favicon.ico">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header Section -->
+        <header class="app-header">
+            <img class="logo" src="https://brandlogos.net/wp-content/uploads/2021/10/oracle-logo-symbol-vector.png" alt="Oracle Logo">
+            <div class="header-title">
+                <h1>DYNAMIC VEGETATION MANAGEMENT</h1>
+                <p class="subheading">Outage Automation with NMS</p>
+            </div>
+
+        </header>
+
+        <!-- Location and Device Controls -->
+        <div class="form-container">
+            <div class="form-box">
+                <div class="form-group">
+                    <label for="latitude">Latitude &nbsp&nbsp&nbsp:</label>
+                    <input type="text" id="latitude" placeholder="Enter Latitude">
+                </div>
+                
+                <div class="form-group">
+                    <label for="longitude">Longitude&nbsp:</label>
+                    <input type="text" id="longitude" placeholder="Enter Longitude">
+                </div>
+            
+            </div>
+            <div class="form-btn">
+                 <button id="load-devices-btn" class="btn">Load Conductors</button>
+            </div>
+            <div class="form-btn">
+                <label for="device-select" id="device-select-label">Select conductor:</label>
+                <select id="device-select" disabled>
+                    <option value="">Please select</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Side-by-Side Content Area -->
+        <div class="content-area">
+            <!-- Upload Section -->
+            <section class="upload-section">
+                <div id="drop-zone" class="upload-area">
+                    <input type="file" id="file-input" accept="image/*" hidden />
+                    <div id="drag-msg">Drag and Drop</div>
+                    <p id="drag-sub-msg">Select or drop images here</p>
+                    <div id="image-container" class="image-preview-container" style="display:none;">
+                        <img id="preview-image" />
+                        <span id="delete-image" class="delete-btn">&times;</span>
+                    </div>
+                </div>
+
+
+                <div class="button-group">
+                     <button id="upload-btn" class="btn">Analyze</button>
+                    </div>
+            </section>
+
+
+            <!-- Results Section -->
+            <section class="results-section">
+                <h3>Detection Results</h3>
+                <p id="result-message">Analysis result will be displayed here.</p>
+                <div id="loading" style="display: none;">Processing...</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tree No</th>
+                            <th>Conductor No</th>
+                            <th>Encroaching?</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-table">
+                        <!-- Results will be populated here -->
+                        <tr><td colspan="3">Upload an image to see results</td></tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
