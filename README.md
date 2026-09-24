@@ -227,3 +227,5 @@ Watch the DVM prototype walkthrough, including conductor loading, image analysis
 ## License
 
 This project is licensed under the [Apache License 2.0](LICENSE).
+
+Copyright 2026 Khoushick S. See [NOTICE](NOTICE) for attribution details.
