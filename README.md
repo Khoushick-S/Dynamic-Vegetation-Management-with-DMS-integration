@@ -80,7 +80,7 @@ Inspection and trimming outcomes are used to validate predictions. New encroachm
 
 This video explains the proposed DVM architecture, from UAV data acquisition and AI-based encroachment analysis through NMS-supported utility operations.
 
-[<img src="architecture.png" alt="Solution architecture video thumbnail" width="720">](Architecture%20Explanation%20-%20Trim.mp4)
+[<img src="architecture.png" alt="Solution architecture video thumbnail" width="720">](https://drive.google.com/file/d/1MgvjJ8ok_I1GIZlBz53VORwBycX7RPVR/view?usp=drivesdk)
 
 Select the image to play the solution architecture explanation.
 
@@ -226,4 +226,4 @@ Watch the DVM prototype walkthrough, including conductor loading, image analysis
 
 ## License
 
-No license has been selected yet. Add a license file before accepting external reuse or contributions.
+This project is licensed under the [Apache License 2.0](LICENSE).
