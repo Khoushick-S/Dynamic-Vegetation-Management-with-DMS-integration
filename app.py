@@ -93,11 +93,15 @@ def analyze():
     filepath = os.path.join(UPLOAD_FOLDER, filename)
     file.save(filepath)
 
-    result = client.run_workflow(
-        workspace_name=os.getenv("ROBOFLOW_WORKSPACE", "innovationewnms"),
-        workflow_id=os.getenv("ROBOFLOW_WORKFLOW_ID", "custom-workflow"),
-        images={"image": filepath}
-    )
+    try:
+        result = client.run_workflow(
+            workspace_name=os.getenv("ROBOFLOW_WORKSPACE", "innovationewnms"),
+            workflow_id=os.getenv("ROBOFLOW_WORKFLOW_ID", "custom-workflow"),
+            images={"image": filepath}
+        )
+    except Exception as error:
+        app.logger.exception("Roboflow workflow request failed")
+        return jsonify({"error": f"Roboflow analysis failed: {error}"}), 502
 
     def extract_boxes(result):
         tree_boxes, wire_boxes = [], []

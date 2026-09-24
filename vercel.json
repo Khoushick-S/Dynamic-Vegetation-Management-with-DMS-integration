@@ -3,6 +3,7 @@
   "installCommand": "pip install -r requirements.txt && pip uninstall -y opencv-python && pip install --no-cache-dir --force-reinstall opencv-python-headless",
   "functions": {
     "app.py": {
+      "maxDuration": 60,
       "excludeFiles": "{uploads/**,processed_image/**,*.docx,*.pptx,*.mp4,node_modules/**,package-lock.json,package.json}"
     }
   }
