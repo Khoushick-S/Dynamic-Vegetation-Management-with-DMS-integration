@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template, send_from_directory
-from PIL import Image, ImageDraw
+import cv2
 import os
 from datetime import datetime
 from pathlib import Path
@@ -118,12 +118,25 @@ def analyze():
     tree_boxes, wire_boxes = extract_boxes(result)
     print(f"✅ Detected {len(tree_boxes)} trees and {len(wire_boxes)} powerlines.")
 
+    image = cv2.imread(filepath)
+
+    for idx, box in enumerate(tree_boxes, start=1):
+        x1, y1, x2, y2 = box
+        cv2.rectangle(image, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        cv2.putText(image, f"Tree {idx}", (x1, y1 + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
+
+    for idx, box in enumerate(wire_boxes, start=1):
+        x1, y1, x2, y2 = box
+        cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
+        cv2.putText(image, f"Powerline {idx}", (x1, y1 + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
+
+    
+
     def are_adjacent(gaps):
         adjacent_pairs = [{"Top", "Left"}, {"Top", "Right"}, {"Bottom", "Left"}, {"Bottom", "Right"}]
         return any(set(gaps) == pair for pair in adjacent_pairs)
 
     def draw_corridors(image, tree_boxes, wire_boxes, margin=20):
-        draw = ImageDraw.Draw(image)
         corridor_boxes = []
         touching_flag = False
         results = []
@@ -169,26 +182,28 @@ def analyze():
                 print(f"Status: {status}")
 
                 # Draw powerline box (Red)
-            draw.rectangle((x1, y1, x2, y2), outline=(0, 0, 255), width=2)
-            draw.text((x1 + 5, y1 + 10), f"PL {wire_idx}", fill=(0, 0, 255))
+            cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
+            cv2.putText(image, f"PL {wire_idx}", (x1 + 5, y1 + 10), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 0, 255), 1)
 
             # Draw tree box (Green)
-            draw.rectangle((t_x1 + 10, t_y1 + 10, t_x2 + 10, t_y2 + 10), outline=(0, 255, 0), width=2)
-            draw.text((t_x1 + 15, t_y1 + 30), f"Tree {tree_idx}", fill=(0, 255, 0))
+            cv2.rectangle(image, (t_x1+10, t_y1+10), (t_x2+10, t_y2+10), (0, 255, 0), 2)
+            cv2.putText(image, f"Tree {tree_idx}", (t_x1 + 15, t_y1 + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 255, 0), 1)
 
             # Draw corridor box (Blue)
-            draw.rectangle((corridor_x1, corridor_y1, corridor_x2, corridor_y2), outline=(255, 0, 0), width=1)
+            cv2.rectangle(image, (corridor_x1, corridor_y1), (corridor_x2, corridor_y2), (255, 0, 0), 1)
 
             # Draw status label (Touching or Nearby)
             color = (0, 0, 255) if touching else (0, 255, 255)
-            draw.text((corridor_x1 + 5, corridor_y1 - 5), f"{status} T{tree_idx}-P{wire_idx}", fill=color)
+            cv2.putText(image, f"{status} T{tree_idx}-P{wire_idx}",
+                        (corridor_x1 + 5, corridor_y1 - 5),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.3, color, 1)
 
         print(results)
         print(f"\nTouching Detected? {'✅ True' if touching_flag else '❌ False'}")
 
         return touching_flag, results
 
-    image = Image.open(filepath).convert("RGB")
+    image = cv2.imread(filepath)
     touching_flag, results = draw_corridors(image, tree_boxes, wire_boxes)
     print(f"Test: {touching_flag}, {results}")
 
@@ -212,7 +227,7 @@ def analyze():
     status_text = "Touching" if touching_flag else "Not_Touching"
     filename = f"{datetime.now().strftime('%d-%m-%Y_%H-%M-%S')}_{status_text}.jpg"
     output_path = output_folder / filename
-    image.save(output_path, format="JPEG")
+    cv2.imwrite(str(output_path), image)
     print(f"✅ Image saved at: {output_path}")
     # results = tuple(results)
 
