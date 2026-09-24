@@ -215,9 +215,9 @@ The intended solution provides dashboard and map views of risk zones, flagged tr
 
 ## Demo Walkthrough
 
-Watch the DVM prototype walkthrough, including conductor loading, image analysis, and encroachment results.
+Select the thumbnail to watch the DVM prototype walkthrough, including conductor loading, image analysis, and encroachment results.
 
-[Watch the DVM demo walkthrough](DVM%20Demo%20Video.mp4)
+[<img src="dvm.png" alt="DVM demo walkthrough thumbnail" width="720">](https://drive.google.com/file/d/1AJLSB5jb5zHPxYh4UHID53CqC2czSUmZ/view?usp=drivesdk)
 
 ## Important Data and Security Notes
 
