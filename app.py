@@ -14,14 +14,12 @@ app = Flask(__name__)
 
 message="Touching"
 
-# Vercel functions can write only to /tmp. Local development keeps the
-# project-relative folders unless explicitly overridden through .env.
-RUNTIME_STORAGE_ROOT = "/tmp" if os.getenv("VERCEL") else None
-UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER") or (
-    f"{RUNTIME_STORAGE_ROOT}/uploads" if RUNTIME_STORAGE_ROOT else "uploads"
-)
-PROCESSED_FOLDER = os.getenv("PROCESSED_FOLDER") or (
-    f"{RUNTIME_STORAGE_ROOT}/processed_image" if RUNTIME_STORAGE_ROOT else "processed_image"
+# Vercel functions can write only to /tmp. This takes precedence over imported
+# local settings so the same .env file can be used for local development and Vercel.
+IS_VERCEL = bool(os.getenv("VERCEL"))
+UPLOAD_FOLDER = "/tmp/uploads" if IS_VERCEL else os.getenv("UPLOAD_FOLDER", "uploads")
+PROCESSED_FOLDER = (
+    "/tmp/processed_image" if IS_VERCEL else os.getenv("PROCESSED_FOLDER", "processed_image")
 )
 CONDUCTORS_CSV = Path(os.getenv("CONDUCTORS_CSV", "conductors_location.csv"))
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
