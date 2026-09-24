@@ -181,11 +181,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 longitude: longitude,
             }),
         })
-            .then((response) => response.json())
+            .then(async (response) => {
+                const data = await response.json().catch(() => ({}));
+                if (!response.ok) {
+                    throw new Error(data.error || `Conductor lookup failed (HTTP ${response.status}).`);
+                }
+                return data;
+            })
             .then((devices) => {
                 const deviceSelect = document.getElementById("device-select");
                 const label = document.getElementById("device-select-label");
                 deviceSelect.innerHTML = '<option value="">Please select</option>';
+                if (devices.length === 0) {
+                    deviceSelect.disabled = true;
+                    resultMessage.textContent = "No conductors were found for these coordinates.";
+                    return;
+                }
                 devices.forEach((device) => {
                     const option = document.createElement("option");
                     option.value = device.alias;
@@ -196,6 +207,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     label.style.color = "black";
                 });
             })
-            .catch((error) => console.error("Error fetching devices:", error));
+            .catch((error) => {
+                resultMessage.textContent = `Conductor lookup failed: ${error.message}`;
+                console.error("Error fetching devices:", error);
+            });
     });
 });
