@@ -1,14 +1,10 @@
 from flask import Flask, request, jsonify, render_template, send_from_directory
 import cv2
-import numpy as np
 import os
 from datetime import datetime
 from pathlib import Path
 import csv
 import random
-import matplotlib.pyplot as plt
-import pandas as pd
-from tabulate import tabulate
 from dotenv import load_dotenv
 from inference_sdk import InferenceHTTPClient
 
@@ -18,8 +14,15 @@ app = Flask(__name__)
 
 message="Touching"
 
-UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", "uploads")
-PROCESSED_FOLDER = os.getenv("PROCESSED_FOLDER", "processed_image")
+# Vercel functions can write only to /tmp. Local development keeps the
+# project-relative folders unless explicitly overridden through .env.
+RUNTIME_STORAGE_ROOT = "/tmp" if os.getenv("VERCEL") else None
+UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER") or (
+    f"{RUNTIME_STORAGE_ROOT}/uploads" if RUNTIME_STORAGE_ROOT else "uploads"
+)
+PROCESSED_FOLDER = os.getenv("PROCESSED_FOLDER") or (
+    f"{RUNTIME_STORAGE_ROOT}/processed_image" if RUNTIME_STORAGE_ROOT else "processed_image"
+)
 CONDUCTORS_CSV = Path(os.getenv("CONDUCTORS_CSV", "conductors_location.csv"))
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(PROCESSED_FOLDER, exist_ok=True)
@@ -197,9 +200,7 @@ def analyze():
                         (corridor_x1 + 5, corridor_y1 - 5),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.3, color, 1)
 
-        df = pd.DataFrame(results)
-        # print(results)
-        print(tabulate(df, headers="keys", tablefmt="grid"))
+        print(results)
         print(f"\nTouching Detected? {'✅ True' if touching_flag else '❌ False'}")
 
         return touching_flag, results

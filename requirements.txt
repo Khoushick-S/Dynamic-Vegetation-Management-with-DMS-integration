@@ -1,8 +1,4 @@
 flask
 opencv-python
-numpy
-matplotlib
-pandas
-tabulate
 inference-sdk
 python-dotenv
