@@ -113,7 +113,7 @@ Select the image to play the solution architecture explanation.
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/Khoushick-S/Dynamic-Vegetation-Management-with-DMS-integration/
 cd "Dynamic Vegetation Management"
 ```
 
