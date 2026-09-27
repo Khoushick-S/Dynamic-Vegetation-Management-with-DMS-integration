@@ -15,11 +15,11 @@ The solution replaces reactive manual inspections and fixed trimming schedules w
 - Display detection results and save annotated output images in `processed_image/`.
 - Generate a six-digit simulated Non-Outage Event reference and operation-note message when encroachment is detected.
 
-> The current prototype does not create real NMS events or operation notes. It displays the event message for demonstration purposes.
+> The current prototype does not create real DMS events or operation notes. It displays the event message for demonstration purposes.
 
 ## Idea Summary
 
-DVM is an AI and UAV-powered predictive-maintenance framework for vegetation near power lines. Drone-based LiDAR and RGB imagery provide 3D geometry, colour, and texture information. The solution processes that information to identify vegetation and conductors, forecast growth, flag potential encroachments, and support operational action through NMS workflows.
+DVM is an AI and UAV-powered predictive-maintenance framework for vegetation near power lines. Drone-based LiDAR and RGB imagery provide 3D geometry, colour, and texture information. The solution processes that information to identify vegetation and conductors, forecast growth, flag potential encroachments, and support operational action through DMS workflows.
 
 ## Problem Statement
 
@@ -27,7 +27,7 @@ Vegetation growth is a major contributor to power outages and wildfire risk. Con
 
 ## Proposed Solution
 
-DVM combines UAV-borne LiDAR, RGB imaging, AI and machine-learning analytics, growth prediction, and NMS integration. It detects vegetation threats early and provides the information needed to plan trimming and operational work before clearance becomes critical.
+DVM combines UAV-borne LiDAR, RGB imaging, AI and machine-learning analytics, growth prediction, and DMS integration. It detects vegetation threats early and provides the information needed to plan trimming and operational work before clearance becomes critical.
 
 ## Solution Workflow
 
@@ -51,9 +51,9 @@ Richard's Growth Model forecasts future vegetation height using sag height, grow
 
 The solution uses a Segment Table for pole-to-pole information and a Normalized Growth Table for predictive-growth information. Both tables are linked by Area ID for scalability. A navigation algorithm uses these records to optimize UAV inspection paths and vegetation-crew travel, reducing redundant visits, fuel use, and time in the field.
 
-### NMS Integration for Operational Execution
+### DMS Integration for Operational Execution
 
-For confirmed encroachments, the target workflow creates a Non-Outage Event with operation notes, displays a tree-encroachment symbol in the NMS viewer, generates vegetation-crew work orders, and prepares switching sheets through Suggested Switching. Customer alerts can be initiated when service disruption is expected.
+For confirmed encroachments, the target workflow creates a Non-Outage Event with operation notes, displays a tree-encroachment symbol in the DMS viewer, generates vegetation-crew work orders, and prepares switching sheets through Suggested Switching. Customer alerts can be initiated when service disruption is expected.
 
 ### Feedback and Continuous Learning
 
@@ -78,7 +78,7 @@ Inspection and trimming outcomes are used to validate predictions. New encroachm
 
 ## Solution Architecture
 
-This video explains the proposed DVM architecture, from UAV data acquisition and AI-based encroachment analysis through NMS-supported utility operations.
+This video explains the proposed DVM architecture, from UAV data acquisition and AI-based encroachment analysis through DMS-supported utility operations.
 
 [<img src="architecture.png" alt="Solution architecture video thumbnail" width="720">](https://drive.google.com/file/d/1wnGUq5uCa3TYJK_QVAZmx71fUgcIiPSR/view?usp=drivesdk)
 
@@ -146,7 +146,7 @@ Create a `.env` file in the project root and set your Roboflow API key:
 ```text
 ROBOFLOW_API_URL=https://detect.roboflow.com
 ROBOFLOW_API_KEY=replace_with_your_roboflow_api_key
-ROBOFLOW_WORKSPACE=innovationewnms
+ROBOFLOW_WORKSPACE=your_roboflow_workspace
 ROBOFLOW_WORKFLOW_ID=custom-workflow
 UPLOAD_FOLDER=uploads
 PROCESSED_FOLDER=processed_image
@@ -168,9 +168,9 @@ Open [http://127.0.0.1:5000](http://127.0.0.1:5000) in your browser.
 
 ## How to Use
 
-1. Enter the latitude and longitude for the inspection location.
+1. Open `Images Coordinates.docx` and enter the latitude and longitude for the inspection location shown for the image you will analyze.
 2. Select **Load Conductors** and choose a conductor from the list.
-3. Upload an image of the vegetation corridor.
+3. Upload the corresponding vegetation-corridor image from the `uploads/` folder.
 4. Select **Analyze**.
 5. Review the tree/conductor results and the analysis message.
 
@@ -191,7 +191,7 @@ Open [http://127.0.0.1:5000](http://127.0.0.1:5000) in your browser.
 
 ## Execution and Output
 
-The intended solution provides dashboard and map views of risk zones, flagged trees, and growth predictions. It produces normalized growth projections for 3, 6, 9, and 12 months, NMS event and work-order information, switching-sheet support, customer-alert inputs, and recommended UAV and crew routes.
+The intended solution provides dashboard and map views of risk zones, flagged trees, and growth predictions. It produces normalized growth projections for 3, 6, 9, and 12 months, DMS event and work-order information, switching-sheet support, customer-alert inputs, and recommended UAV and crew routes.
 
 ## Technologies Used
 
@@ -201,7 +201,7 @@ The intended solution provides dashboard and map views of risk zones, flagged tr
 - **OpenCV:** Image processing, segmentation, and bounding-box creation.
 - **GIS tools:** Spatial visualization of encroachment zones.
 - **Table-driven navigation algorithms:** Efficient UAV and crew routing.
-- **NMS integration:** Event, work-order, switching, viewer, and notification workflows.
+- **DMS integration:** Event, work-order, switching, viewer, and notification workflows.
 
 ## Business Value
 
