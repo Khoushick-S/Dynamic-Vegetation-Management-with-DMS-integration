@@ -82,7 +82,7 @@ This video explains the proposed DVM architecture, from UAV data acquisition and
 
 [<img src="architecture.png" alt="Solution architecture video thumbnail" width="720">](https://drive.google.com/file/d/1wnGUq5uCa3TYJK_QVAZmx71fUgcIiPSR/view?usp=drivesdk)
 
-Select the image to play the solution architecture explanation.
+Play the video for a walkthrough of the DVM solution architecture.
 
 ## Technology Stack
 
@@ -215,7 +215,7 @@ The intended solution provides dashboard and map views of risk zones, flagged tr
 
 ## Demo Walkthrough
 
-Select the thumbnail to watch the DVM prototype walkthrough, including conductor loading, image analysis, and encroachment results.
+Play the video for a walkthrough of conductor loading, image analysis, and encroachment results.
 
 [<img src="dvm.png" alt="DVM demo walkthrough thumbnail" width="720">](https://drive.google.com/file/d/1AJLSB5jb5zHPxYh4UHID53CqC2czSUmZ/view?usp=drivesdk)
 
